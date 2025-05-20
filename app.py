@@ -1,12 +1,20 @@
 from flask import Flask, redirect, request
 import requests
+from dotenv import load_dotenv
+import os
+
+# Load variables from .env file
+load_dotenv()
+
+# Access them using os.environ
+APP_ID = os.getenv("APP_ID")
+APP_SECRET = os.getenv("APP_SECRET")
+REDIRECT_URI = os.getenv("REDIRECT_URI")
 
 app = Flask(__name__)
 
 # Cấu hình app_id và app_secret của anh
-APP_ID = 'cli_a88a7776f9b89029'
-APP_SECRET = 'sPbmORVpwxIdKThH4OFKyfyZlgpc6RQn'
-REDIRECT_URI = 'https://hanhnguyen-1.onrender.com/oauth/callback'  # Đã cấu hình trong Lark Developer Console
+ # Đã cấu hình trong Lark Developer Console
 
 @app.route('/')
 def home():
@@ -52,4 +60,7 @@ def callback():
         return f'❌ Lỗi khi lấy access token: {res_json}'
 
 if __name__ == '__main__':
-    app.run(debug=True, port=8080)
+    import os
+    port = int(os.environ.get("PORT", 5000))
+    app.run(debug=True, host="0.0.0.0", port=port)
+
